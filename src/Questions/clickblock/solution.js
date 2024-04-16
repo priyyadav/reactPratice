@@ -58,24 +58,34 @@ function Solution() {
                 }
             }
         });
-        setGrid(grid.map((gridList)=>{
-            if(gridList.id === itemList.id){
-                gridList.isClicked=true;
+        setGrid(grid.map((gridItem)=>{
+            if(gridItem.id === itemList.id){
+                gridItem.isClicked=true;
             }
-            return gridList;
+            return gridItem;
         }))
     }
     useEffect(()=>{
-        if(queue?.length===9){
-            let i =0;
-            setInterval(()=>{
-                if(i<9){
-                    let newQue = queue[i];
-                    newQue.isClicked=false;
-                    setQueue((pre)=>[...pre,newQue]);
-                    i++;
-                }
-            },1000)
+        
+        let copyQueue =[...queue];
+        let a =0;
+        if(queue.length===9){
+            for(let i =0; i<9;i++){
+                let x = copyQueue.shift();
+                a++;
+                setTimeout(()=>{
+                    debugger
+                        setGrid((grid)=>{
+                            return grid.map((gridItem)=>{
+                                return x.id === gridItem.id ?{...gridItem,isClicked:false}:gridItem;
+                            })
+                        })
+                },i*1000)
+            }
+        }
+        
+        if(a===9){
+            setQueue([]);
         }
     },[queue])
     return (
